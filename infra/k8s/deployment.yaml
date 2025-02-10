@@ -1,0 +1,20 @@
+# Kubernetes Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-calendar-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-calendar
+  template:
+    metadata:
+      labels:
+        app: devops-calendar
+    spec:
+      containers:
+      - name: api
+        image: devops-calendar:latest
+        ports:
+        - containerPort: 8000
