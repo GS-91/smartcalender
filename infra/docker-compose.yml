@@ -1,6 +1,22 @@
 version: '3.8'
+
 services:
   api:
-    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  # ✅ RICHTIG
+
+    build:
+      context: ..
+      dockerfile: Dockerfile
+
+    container_name: smartcalendar-api
     ports:
       - "8000:8000"
+    environment:
+      - PYTHONPATH=/app  # Setzt den Modulpfad für Python
+    volumes:
+      - /Users/ivanappl/DevOpsKalenderProjekt:/app
+      - /Users/ivanappl/DevOpsKalenderProjekt/config:/app/config
+      - /Users/ivanappl/DevOpsKalenderProjekt/api_key.txt:/app/api_key.txt
+
+
+    restart: always
