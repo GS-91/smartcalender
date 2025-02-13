@@ -18,5 +18,8 @@ services:
       - /Users/ivanappl/DevOpsKalenderProjekt/config:/app/config
       - /Users/ivanappl/DevOpsKalenderProjekt/api_key.txt:/app/api_key.txt
 
+    network_mode: "host"
+
+
 
     restart: always
