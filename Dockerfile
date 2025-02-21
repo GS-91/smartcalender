@@ -1,19 +1,26 @@
-# Verwende das offizielle Python-Image
+# Use official Python image
 FROM python:3.9
 
-# Setze das Arbeitsverzeichnis im Container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Kopiere nur die requirements.txt zuerst, um Caching zu nutzen
+# Copy requirements and install dependencies
 COPY requirements.txt .
-
-# Installiere die Abhängigkeiten
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopiere den gesamten Code ins Containerverzeichnis /app
-#COPY . .  # <— Kommentar wurde außerhalb der Codezeile gesetzt
+# Copy all project files
 COPY . /app
 
+# Copy the API key file explicitly to the correct location
+COPY app/api_key.txt /app/app/api_key.txt
 
-# Starte die FastAPI-Anwendung mit Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Kopiere die credentials.json ins richtige Verzeichnis
+COPY app/credentials.json /app/app/api/credentials.json
+
+# Start the FastAPI app with Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
+
+
+
