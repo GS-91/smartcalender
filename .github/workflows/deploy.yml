@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Optional weiterhin manuell startbar
+  workflow_dispatch:
 
 env:
   AWS_REGION: eu-central-1
@@ -17,39 +17,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🔐 Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: 🔑 Login to Amazon ECR
-        id: login-ecr
+      - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: 🏗 Build Docker Image
+      - name: Create credentials.json from GitHub Secret
         run: |
-          docker build --platform linux/amd64 -t $ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+          mkdir -p app/api
+          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > app/credentials.json
 
-      - name: 🏷 Tag Image
+      - name: Build Docker image
         run: |
-          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${IMAGE_TAG}"
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
-          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
-      - name: 📤 Push to ECR
+      - name: Tag image for ECR
         run: |
-          docker push $IMAGE_URI
+          IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI:$IMAGE_TAG
 
-      - name: 🚀 Deploy to Amazon ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: smartcalender-task-v2
-          service: smartcalender-service
-          cluster: smartcalender-cluster-v2
-          wait-for-service-stability: true
+      - name: Push image to ECR
+        run: |
+          IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
+          docker push $IMAGE_URI:$IMAGE_TAG
 
