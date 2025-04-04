@@ -4,13 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Optional weiterhin manuell startbar
-
-env:
-  AWS_REGION: eu-central-1
-  ECR_REPOSITORY: smartcalender-api
-  IMAGE_TAG: latest
-  IMAGE_NAME: smartcalendar-api
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -18,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
@@ -26,25 +20,23 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-central-1
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker image
-        run: docker build -t ${{ env.IMAGE_NAME }} -f infra/Dockerfile infra
-
-      - name: Tag Docker image
+      - name: Build & Push Docker image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: smartcalender-api
+          IMAGE_TAG: latest
         run: |
-          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          docker tag ${{ env.IMAGE_NAME }} $IMAGE_URI
-          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG -f infra/Dockerfile .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Push Docker image to Amazon ECR
-        run: docker push $IMAGE_URI
-
-      - name: Deploy to Amazon ECS
+      - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: infra/task-definition.json
