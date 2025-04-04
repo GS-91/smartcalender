@@ -1,13 +1,11 @@
 name: Deploy to Amazon ECS
 
 on:
-  push:
-    branches:
-      - main  # Passe das an deinen Branch an, z. B. "master", wenn nötig
+  workflow_dispatch:  # Nur manuell starten!
 
 jobs:
   deploy:
-    name: Build and Deploy to ECS
+    name: Deploy to ECS
     runs-on: ubuntu-latest
 
     steps:
@@ -19,37 +17,21 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: eu-central-1  # Frankfurt
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: latest
+      - name: Pull latest image from ECR
         run: |
-          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${IMAGE_TAG}"
-          docker build -t $IMAGE_URI .
-          docker push $IMAGE_URI
-          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+          IMAGE_URI=841162697075.dkr.ecr.eu-central-1.amazonaws.com/smartcalender-api:latest
+          docker pull $IMAGE_URI
 
-      - name: Register new task definition revision
-        id: task-def
-        run: |
-          TASK_DEF=$(aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_DEFINITION_FAMILY }})
-          echo "$TASK_DEF" > task-def.json
-          IMAGE_URI=${{ env.IMAGE_URI }}
-          NEW_DEF=$(cat task-def.json | jq --arg IMAGE "$IMAGE_URI" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | {family: .family, containerDefinitions: [.containerDefinitions[0]]}')
-          echo "$NEW_DEF" > new-task-def.json
-          TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json | jq -r '.taskDefinition.taskDefinitionArn')
-          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
-
-      - name: Deploy new task definition to ECS service
-        run: |
-          aws ecs update-service \
-            --cluster ${{ secrets.ECS_CLUSTER }} \
-            --service ${{ secrets.ECS_SERVICE }} \
-            --task-definition ${{ env.TASK_DEF_ARN }}
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: smartcalender-task-v2
+          service: smartcalender-service
+          cluster: smartcalender-cluster-v2
+          wait-for-service-stability: true
