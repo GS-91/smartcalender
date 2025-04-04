@@ -4,7 +4,12 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch:  # Optional weiterhin manuell startbar
+
+env:
+  AWS_REGION: eu-central-1
+  ECR_REPOSITORY: smartcalender-api
+  IMAGE_TAG: latest
 
 jobs:
   build-and-deploy:
@@ -12,34 +17,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: 🔐 Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
+      - name: 🔑 Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build & Push Docker image to ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: smartcalender-api
-          IMAGE_TAG: latest
+      - name: 🏗 Build Docker Image
         run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG -f infra/Dockerfile .
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build --platform linux/amd64 -t $ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
 
-      - name: Deploy to ECS
+      - name: 🏷 Tag Image
+        run: |
+          IMAGE_URI="${{ steps.login-ecr.outputs.registry }}/${ECR_REPOSITORY}:${IMAGE_TAG}"
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $IMAGE_URI
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+
+      - name: 📤 Push to ECR
+        run: |
+          docker push $IMAGE_URI
+
+      - name: 🚀 Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: infra/task-definition.json
+          task-definition: smartcalender-task-v2
           service: smartcalender-service
           cluster: smartcalender-cluster-v2
           wait-for-service-stability: true
