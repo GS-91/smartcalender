@@ -37,9 +37,10 @@ jobs:
           echo "${{ secrets.API_KEY_TXT_B64 }}" | base64 -d > app/api_key.txt
 
       - name: Build Docker image
-        rn: |
+        run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
-          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dock
+          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
+
       - name: Push Docker image
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
