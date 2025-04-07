@@ -1,9 +1,6 @@
 name: Docker CI/CD
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
@@ -19,6 +16,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -36,17 +36,10 @@ jobs:
         run: |
           echo "${{ secrets.API_KEY_TXT_B64 }}" | base64 -d > app/api_key.txt
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Build Docker image
-        run: |
+        rn: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
-          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
-
+          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dock
       - name: Push Docker image
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
