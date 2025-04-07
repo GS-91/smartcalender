@@ -1,4 +1,4 @@
-name: Docker CI/CD
+name: Docker CI/CD  
 
 on: 
   push:
@@ -20,23 +20,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+      - name: Decode and write secret files
+        run: |
+          mkdir -p app
+          echo "${{ secrets.CREDENTIALS_JSON_B64 }}" | base64 --decode > app/credentials.json
+          echo "${{ secrets.API_KEY_TXT_B64 }}" | base64 --decode > app/api_key.txt
 
       - name: Log in to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Docker image
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
-          docker build --platform linux/amd64 -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
+          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
 
-      - name: Push Docker image to Amazon ECR
+      - name: Push Docker image to ECR
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
           docker push $IMAGE_URI:$IMAGE_TAG
