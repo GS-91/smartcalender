@@ -20,23 +20,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Decode credentials.json from secret
         run: |
+          mkdir -p app/api
           echo "${{ secrets.CREDENTIALS_JSON_B64 }}" | base64 -d > app/api/credentials.json
 
       - name: Decode api_key.txt from secret
         run: |
           echo "${{ secrets.API_KEY_TXT_B64 }}" | base64 -d > app/api_key.txt
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Docker image
         run: |
