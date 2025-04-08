@@ -1,9 +1,6 @@
 name: Docker CI/CD
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
@@ -53,9 +50,9 @@ jobs:
           docker push $IMAGE_URI:$IMAGE_TAG
 
   deploy-to-fargate:
-    name: 🚀 Manuelles Fargate-Deployment
-    runs-on: ubuntu-latest
+    name: 🚀 Deploy to Fargate
     needs: build-and-deploy
+    runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
 
     steps:
@@ -66,9 +63,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Trigger Fargate deployment
+      - name: Trigger ECS Fargate deployment
         run: |
           aws ecs update-service \
-            --cluster smartcalender-cluster-v2 \
-            --service smartcalender-service \
+            --cluster ${{ secrets.ECS_CLUSTER }} \
+            --service ${{ secrets.ECS_SERVICE }} \
             --force-new-deployment
