@@ -1,0 +1,20 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: eu-central-1
+  ECR_REPOSITORY: smartcalender-api
+  IMAGE_TAG: latest
+
+jobs:
+  build-and-deploy:
+    name: Build & Push Docker image to ECR
+    runs-on: ubuntu-latest
+
+    steps:
+      - 

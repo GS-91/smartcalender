@@ -120,6 +120,8 @@ Mit dieser Pipeline wurde ein vollständiger CI/CD-Prozess realisiert:
 
 Diese Struktur ist **branchfähig**, **skalierbar** und entspricht einem **industriellen Standard für cloud-native Microservices**.
 
+✅ Continuous Deployment aktiv: Jeder Push auf `main` triggert automatischen Build & Deployment auf AWS Fargate.
+
 ---
 
 ## 📝 Autoreninfo
