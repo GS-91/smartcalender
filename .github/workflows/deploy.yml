@@ -42,7 +42,8 @@ jobs:
       - name: 🐳 Build Docker image
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
-          docker build -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
+          docker buildx build --platform linux/amd64 -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile --load .
+
 
       - name: 📦 Push Docker image to ECR
         run: |
