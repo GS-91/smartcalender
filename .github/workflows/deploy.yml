@@ -14,58 +14,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📦 Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: 🔐 Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Decode credentials.json from secret
+      - name: 🔑 Decode credentials.json from secret
         run: |
           mkdir -p app/api
           echo "${{ secrets.CREDENTIALS_JSON_B64 }}" | base64 -d > app/api/credentials.json
 
-      - name: Decode api_key.txt from secret
+      - name: 🔑 Decode api_key.txt from secret
         run: |
           echo "${{ secrets.API_KEY_TXT_B64 }}" | base64 -d > app/api_key.txt
 
-      - name: Set up Docker Buildx
+      - name: ⚙️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Log in to Amazon ECR
+      - name: 🔐 Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker image
+      - name: 🛠️ Build Docker image
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
           docker build -t $IMAGE_URI:$IMAGE_TAG -f Dockerfile .
 
-      - name: Push Docker image
+      - name: 🚀 Push Docker image to ECR
         run: |
           IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}"
           docker push $IMAGE_URI:$IMAGE_TAG
 
-  deploy-to-fargate:
-    name: 🚀 Deploy to Fargate
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: ☁️ Deploy to Amazon ECS (Fargate)
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Trigger ECS Fargate deployment
-        run: |
-          aws ecs update-service \
-            --cluster ${{ secrets.ECS_CLUSTER }} \
-            --service ${{ secrets.ECS_SERVICE }} \
-            --force-new-deployment
+          cluster: ${{ secrets.ECS_CLUSTER }}
+          service: ${{ secrets.ECS_SERVICE }}
+          task-definition: ${{ secrets.ECS_TASK_DEFINITION_FAMILY }}
+          wait-for-service-stability: true
