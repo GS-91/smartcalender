@@ -9,3 +9,5 @@ credentials.json
 api_key.txt
 config/
 .aws/
+.terraform/
+
