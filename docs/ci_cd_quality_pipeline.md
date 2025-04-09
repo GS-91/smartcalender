@@ -1,19 +1,29 @@
-# 🚀 CI/CD Quality Assurance Pipeline
+# CI/CD Quality Assurance Pipeline
 
-Diese Pipeline prüft bei jedem Push auf `main` und bei Pull Requests automatisch:
+Diese Pipeline sorgt dafür, dass Codequalität und Sicherheit automatisch überprüft werden.
 
-1. ✅ **Code Style** mit `flake8`
-2. ✅ **Unittests** mit `pytest`
-3. ✅ **Security Scan** mit `bandit`
+## Checks
 
-## 📁 Setup
+1. **Flake8**
+   - Prüft den Python-Code auf Style-Konformität.
+   - Ziel: Sauberer, wartbarer Code.
 
-- Dev-Abhängigkeiten in `requirements-dev.txt`
-- Testcode im Ordner `tests/`
-- Produktionscode im Ordner `app/`
+2. **Pytest**
+   - Führt Unit-Tests aus.
+   - Ziel: Sicherstellen, dass Funktionen korrekt arbeiten.
 
-## 🔐 Vorteile
+3. **Bandit**
+   - Analysiert Sicherheitsrisiken im Code.
+   - Ziel: Früherkennung von Schwachstellen.
 
-- Vermeidet schlechte Commits
-- Zeigt Sicherheitsrisiken frühzeitig
-- Professioneller Workflow für jede Softwarefirma
+## Setup
+
+- Alle Abhängigkeiten werden über `requirements-dev.txt` installiert.
+- Testcode befindet sich im Verzeichnis `tests/`.
+- Produktivcode befindet sich im Verzeichnis `app/`.
+
+## Vorteile
+
+- Vermeidet schlechte Commits.
+- Erkennt Probleme frühzeitig.
+- Stellt Professionalität im Workflow sicher.
