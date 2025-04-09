@@ -46,6 +46,23 @@ docker-compose -f infra/docker-compose.yml up --build -d
 }
 ```
 
+
+## 🧪 Automatisierte Code-Qualitätssicherung
+
+Dieses Projekt enthält eine GitHub Actions Pipeline, die bei jedem Push auf `main` sowie bei Pull Requests automatisch Folgendes prüft:
+
+1. **Code Style** – via `flake8` (nach PEP8)
+2. **Unittests** – via `pytest`
+3. **Security Scan** – via `bandit`
+
+### 📦 Dev-Abhängigkeiten
+
+Installiere alle benötigten Tools mit:
+
+```bash
+pip install -r requirements-dev.txt
+
+
 ---
 
 ## Autor

@@ -9,3 +9,8 @@ credentials.json
 api_key.txt
 config/
 .aws/
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.DS_Store
