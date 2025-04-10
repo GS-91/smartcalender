@@ -30,6 +30,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
+          pip install pytest-cov
           PYTHONPATH=. pytest --cov=app --cov-report=term --cov-report=xml --cov-report=html tests/
 
       - name: Security scan with bandit
