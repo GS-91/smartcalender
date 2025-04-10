@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from app.api.calendar_api import create_calendar_event
+from app.api import openai_api
 
 app = FastAPI()
 
@@ -81,5 +82,4 @@ def list_calendars():
         return {"error": f"Fehler beim Abrufen der Kalender: {str(e)}"}
 
 # 🔥 Wichtig: Router hinzufügen
-from app.api import openai_api
 app.include_router(openai_api.router)
