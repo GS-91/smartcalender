@@ -5,7 +5,9 @@ from datetime import datetime, timedelta
 from openai import OpenAI
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
-SERVICE_ACCOUNT_FILE = "/app/app/api/credentials.json"
+SERVICE_ACCOUNT_FILE = os.path.join(
+    os.path.dirname(__file__), "credentials.json"
+)
 
 
 def load_api_key():
@@ -15,21 +17,24 @@ def load_api_key():
         with open(file_path, "r", encoding="utf-8") as file:
             return file.read().strip()
     except FileNotFoundError:
-        raise Exception(f"File '{file_path}' not found.ensure its present.")
+        raise Exception(f"File '{file_path}' not found.")
+
+
+def get_calendar_service():
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    )
+    return build("calendar", "v3", credentials=creds)
 
 
 api_key = load_api_key()
 client = OpenAI(api_key=api_key)
-creds = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
-service = build("calendar", "v3", credentials=creds)
 
 
 def generate_funny_title(user_input):
     prompt = (
-        f'Erstelle einen lustigen Titel für: "{user_input}". '
-        "Maximal 10 Wörter, übertrieben & spaßig."
+        f"Erstelle einen lustigen, kreativen Titel für: \"{user_input}\". "
+        "Max. 10 Wörter, spaßig und übertrieben."
     )
     try:
         response = client.chat.completions.create(
@@ -42,8 +47,7 @@ def generate_funny_title(user_input):
 
 def create_calendar_event(user_input, day, time, duration):
     summary = generate_funny_title(user_input)
-    start_str = f"2024-12-11T{time}:00"
-    start_datetime = datetime.strptime(start_str, "%Y-%m-%dT%H:%M:%S")
+    start_datetime = datetime.strptime(f"2024-12-11T{time}:00", "%Y-%m-%dT%H:%M:%S")
     end_datetime = start_datetime + timedelta(hours=duration)
 
     event = {
@@ -60,17 +64,11 @@ def create_calendar_event(user_input, day, time, duration):
     }
 
     try:
-        event_result = (
-            service.events()
-            .insert(calendarId="91gabriel.simon@gmail.com", body=event)
-            .execute()
-        )
+        service = get_calendar_service()
+        result = service.events().insert(calendarId="primary", body=event).execute()
         return {
-            "message": (
-                f"Termin '{summary}' am {day} um {time} "
-                f"für {duration} Stunden erstellt!"
-            ),
-            "link": event_result.get("htmlLink", "Kein Link verfügbar"),
+            "message": f"Termin '{summary}' erstellt!",
+            "link": result.get("htmlLink", "Kein Link verfügbar"),
         }
     except Exception as e:
-        return {"error": f"Fehler beim Erstellen des Termins: {e}"}
+        return {"error": str(e)}
