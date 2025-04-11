@@ -1,9 +1,11 @@
 import os
-from fastapi import APIRouter
-
+from datetime import datetime, timedelta
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 from openai import OpenAI
 
-router = APIRouter()
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
+SERVICE_ACCOUNT_FILE = "/app/app/api/credentials.json"
 
 
 def load_api_key():
@@ -13,18 +15,25 @@ def load_api_key():
         with open(file_path, "r", encoding="utf-8") as file:
             return file.read().strip()
     except FileNotFoundError:
-        raise Exception("Die Datei 'api_key.txt' wurde nicht gefunden.")
+        raise Exception(
+            f"File '{file_path}' not found. Ensure it's present."
+        )
 
 
 def get_openai_client():
-    api_key = load_api_key()
-    return OpenAI(api_key=api_key)
+    return OpenAI(api_key=load_api_key())
 
 
-@router.post("/generate_funny_response/")
-def generate_funny_response(event_text: str):
+def get_calendar_service():
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    )
+    return build("calendar", "v3", credentials=creds)
+
+
+def generate_funny_title(user_input):
     prompt = (
-        f'Erstelle einen lustigen Titel für: "{event_text}". '
+        f'Erstelle einen lustigen Titel für: "{user_input}". '
         "Maximal 10 Wörter, übertrieben & spaßig."
     )
     try:
@@ -33,6 +42,43 @@ def generate_funny_response(event_text: str):
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
         )
-        return {"result": response.choices[0].message.content.strip()}
+        return response.choices[0].message.content.strip()
+    except Exception:
+        return "Super geheimer Top-Manager-Termin"
+
+
+def create_calendar_event(user_input, day, time, duration):
+    summary = generate_funny_title(user_input)
+    start_str = f"2024-12-11T{time}:00"
+    start_datetime = datetime.strptime(start_str, "%Y-%m-%dT%H:%M:%S")
+    end_datetime = start_datetime + timedelta(hours=duration)
+
+    event = {
+        "summary": summary,
+        "start": {
+            "dateTime": start_datetime.strftime("%Y-%m-%dT%H:%M:%S"),
+            "timeZone": "Europe/Berlin",
+        },
+        "end": {
+            "dateTime": end_datetime.strftime("%Y-%m-%dT%H:%M:%S"),
+            "timeZone": "Europe/Berlin",
+        },
+        "recurrence": [f"RRULE:FREQ=WEEKLY;BYDAY={day.upper()}"],
+    }
+
+    try:
+        service = get_calendar_service()
+        event_result = (
+            service.events()
+            .insert(calendarId="91gabriel.simon@gmail.com", body=event)
+            .execute()
+        )
+        return {
+            "message": (
+                f"Termin '{summary}' am {day} um {time} "
+                f"für {duration} Stunden erstellt!"
+            ),
+            "link": event_result.get("htmlLink", "Kein Link verfügbar"),
+        }
     except Exception as e:
-        return {"error": f"Fehler bei der Anfrage an OpenAI: {str(e)}"}
+        return {"error": f"Fehler beim Erstellen des Termins: {e}"}
