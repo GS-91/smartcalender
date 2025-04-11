@@ -20,12 +20,15 @@ def load_api_key():
         )
 
 
-api_key = load_api_key()
-client = OpenAI(api_key=api_key)
-creds = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
-service = build("calendar", "v3", credentials=creds)
+def get_openai_client():
+    return OpenAI(api_key=load_api_key())
+
+
+def get_calendar_service():
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    )
+    return build("calendar", "v3", credentials=creds)
 
 
 def generate_funny_title(user_input):
@@ -34,6 +37,7 @@ def generate_funny_title(user_input):
         "Maximal 10 Wörter, übertrieben & spaßig."
     )
     try:
+        client = get_openai_client()
         response = client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
@@ -63,6 +67,7 @@ def create_calendar_event(user_input, day, time, duration):
     }
 
     try:
+        service = get_calendar_service()
         event_result = (
             service.events()
             .insert(calendarId="91gabriel.simon@gmail.com", body=event)
@@ -77,5 +82,3 @@ def create_calendar_event(user_input, day, time, duration):
         }
     except Exception as e:
         return {"error": f"Fehler beim Erstellen des Termins: {e}"}
-
-# Hinzugefügte leere Zeile
