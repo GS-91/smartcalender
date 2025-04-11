@@ -18,6 +18,9 @@ def test_generate_funny_title(monkeypatch):
                 def create(model, messages):
                     return DummyResponse()
 
-    monkeypatch.setattr(calendar_api, "client", DummyClient())
-    result = calendar_api.generate_funny_title("Test")
-    assert "Testtitel" in result
+    # 👉 monkeypatch auf die Funktion statt auf das Modulattribut
+    monkeypatch.setattr(
+        calendar_api, "get_openai_client", lambda: DummyClient()
+    )
+    result = calendar_api.generate_funny_title("Testmeeting")
+    assert result == "🦄 Testtitel"
