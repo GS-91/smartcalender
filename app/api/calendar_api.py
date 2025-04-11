@@ -1,7 +1,7 @@
 import os
-from datetime import datetime, timedelta
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from datetime import datetime, timedelta
 from openai import OpenAI
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -9,15 +9,10 @@ SERVICE_ACCOUNT_FILE = "/app/app/api/credentials.json"
 
 
 def load_api_key():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_dir, "..", "api_key.txt")
-    try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.read().strip()
-    except FileNotFoundError:
-        raise Exception(
-            f"File '{file_path}' not found. Ensure it's present."
-        )
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise Exception("OPENAI_API_KEY not set in environment.")
+    return api_key
 
 
 def get_openai_client():
