@@ -36,3 +36,16 @@ Sie stellt sicher, dass der Code bei jeder Änderung auf **Style**, **Funktional
 - Vermeidet fehlerhafte Commits – durch automatische Checks vor Merge.
 - Erkennt Probleme frühzeitig – noch bevor sie in Produktion landen.
 - Fördert Teamqualität & Professionalität – durch klar definierte Qualitätsstandards.
+
+##  Weiterführende Dateien
+
+Diese Dateien enthalten ergänzende Anleitungen zur Docker-Nutzung und zur Infrastrukturbereitstellung mit Terraform.
+
+- [`DockerAndCalender.md`](DockerAndCalender.md)  
+  👉 Beschreibt, wie Docker-Container und der SmartCalendar zusammenarbeiten.
+
+- [`terraform_infra_setup.md`](terraform_infra_setup.md)  
+  👉 Schritt-für-Schritt-Anleitung zur Einrichtung der Cloud-Infrastruktur mit Terraform (ECS, Fargate, VPC, etc.).
+
+- [`terraform_ecr_setup_2025-04-08.md`](terraform_ecr_setup_2025-04-08.md)  
+  👉 Anleitung zum Anlegen eines ECR-Repositories und zur Integration in den CI/CD-Workflow.
