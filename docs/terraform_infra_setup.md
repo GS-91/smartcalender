@@ -37,4 +37,10 @@ Diese Datei beschreibt auf einfache und professionelle Weise die Terraform-Konfi
 - Die Konfiguration nutzt `ignore_changes`, um Task-Definitionen bei kleinen Änderungen nicht unnötig neu zu erstellen.
 - Das Container-Image wird aus einem ECR-Repository geladen, z. B. `smartcalender-api:latest`.
 
-Weitere Details findest du in der zugehörigen Datei: [`main.tf`](../infra/terraform/main.tf)
+- Die Konfigurationen befinden sich im Verzeichnis `infra/terraform/`.
+- Zentrale Datei: `infra/terraform/main.tf`
+- Optional: Umgebungsvariablen über `.tfvars` einbinden
+
+##  Weitere Ressourcen
+- [Terraform-Dokumentation](https://developer.hashicorp.com/terraform/docs)
+- [AWS ECS Provider Docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service)

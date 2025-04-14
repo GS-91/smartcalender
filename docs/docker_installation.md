@@ -1,5 +1,8 @@
 # Docker Installation & Fehlerbehebung
 
++ Diese Datei beschreibt, wie Docker korrekt installiert wird und typische Fehler beim Starten von Docker oder Containern gelöst werden können.
++ Die Inhalte richten sich an Einsteiger:innen, die SmartCalendar lokal mit Docker betreiben möchten.
+
 ## **1. "zsh: command not found: docker"**
 **Lösung:** Starte Docker Desktop und prüfe mit:
 ```bash
@@ -37,3 +40,6 @@ Dann das Image neu bauen:
 ```bash
 docker build -t smartcalendar-api -f infra/Dockerfile .
 ```
+- Achte darauf, dass `infra/docker-compose.yml` existiert und korrekt konfiguriert ist.
+- Das Haupt-Dockerfile liegt im Projektverzeichnis als `Dockerfile`.
+- Wenn du mit einem Linux-System arbeitest, musst du eventuell den Docker-Daemon mit `sudo systemctl start docker` manuell starten.

@@ -1,8 +1,10 @@
 # CI/CD Deployment Documentation – SmartCalendar (Stand: 2025-04-08)
 
-## 🎯 Zielsetzung
+##  Zielsetzung
 
-Diese Dokumentation beschreibt den Aufbau und die erfolgreiche Implementierung einer Continuous Integration / Continuous Deployment (CI/CD) Pipeline für die FastAPI-basierte SmartCalendar-Anwendung mit Deployment auf **AWS ECS Fargate** und Nutzung von **Amazon ECR** als Container Registry.
+Diese Datei beschreibt die gesamte CI/CD-Pipeline für das SmartCalendar-Projekt.
+Ziel ist es, automatisiertes Testen, Bauen und Deployment in AWS zu ermöglichen.
+Die Pipeline läuft über GitHub Actions und deployt auf AWS ECS Fargate.
 
 ---
 
