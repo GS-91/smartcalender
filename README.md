@@ -1,40 +1,39 @@
-# SmartCalendar – DevOps-Projekt mit Google Calendar API & OpenAI
+# SmartCalendar – DevOps Project with Google Calendar API & OpenAI
 
-SmartCalendar ist ein persönliches DevOps-Projekt zur Automatisierung von Kalendereinträgen via REST API. Die FastAPI-Anwendung erstellt Google-Kalendereinträge und generiert humorvolle Titel mit GPT-4 von OpenAI. Das Projekt wurde mit Fokus auf Clean Code, CI/CD-Pipelines, Infrastructure as Code (IaC) und Docker umgesetzt.
+SmartCalendar is a personal DevOps project aimed at automating calendar entries via REST API. The FastAPI application creates Google Calendar events and generates humorous titles using GPT-4 from OpenAI. The project emphasizes Clean Code, CI/CD pipelines, Infrastructure as Code (IaC), and Docker.
 
-## Technologien & Tools
+## Technologies & Tools
 
 - **Python** (FastAPI, Pydantic, Pytest)  
 - **Google Calendar API & OpenAI API**  
 - **Docker & Docker Compose**  
-- **GitHub Actions** (CI/CD mit Linting, Tests, Security Scan)  
+- **GitHub Actions** (CI/CD with linting, tests, security scans)  
 - **Terraform** (AWS ECS, Fargate, ECR Deployment)  
 - **Bandit, Flake8, Coverage Report**  
 - **Secrets Management via GitHub Secrets**
 
-## DevOps-Fokus
+## DevOps Focus
 
-- Vollautomatisierter Deployment-Prozess über GitHub Actions  
-- Qualitätssicherung mit flake8, pytest, bandit  
-- Echte API-Integration und Secrets Management im CI/CD-Kontext  
-- AWS-Infrastruktur deklarativ provisioniert mit Terraform  
-- Saubere Projektstruktur nach DevOps Best Practices
+- Fully automated deployment process with GitHub Actions  
+- Quality assurance using flake8, pytest, bandit  
+- Real API integration and secrets management in the CI/CD context  
+- Declarative provisioning of AWS infrastructure using Terraform  
+- Clean project structure following DevOps best practices
 
-## Warum dieses Projekt?
+## Why this project?
 
-Aus persönlichem Interesse an modernen DevOps-Prinzipien habe ich dieses Projekt gestartet, um ein praxisnahes API-Szenario umzusetzen. Ziel war es, zentrale DevOps-Komponenten wie CI/CD, Containerisierung und Cloud-Infrastruktur an einem konkreten Beispiel anzuwenden und besser zu verstehen.
+Driven by a personal interest in modern DevOps principles, I initiated this project to implement a practical API scenario. The goal was to apply and deepen my understanding of key DevOps components, such as CI/CD, containerization, and cloud infrastructure, through a concrete use-case.
 
+## Features
 
-## Funktionen
-
-- Erstellen von Kalendereinträgen
-- Auflisten von Kalendereinträgen
-- Auflisten von verbundenen Google-Kalendern
-- Generieren humorvoller Titel via OpenAI
+- Creating calendar entries
+- Listing calendar entries
+- Listing connected Google calendars
+- Generating humorous titles via OpenAI
 
 ## Installation
 
-### 1. Lokales Setup
+### 1. Local Setup
 
 ```bash
 git clone https://github.com/GS-91/smartcalender.git
@@ -45,7 +44,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Die API ist erreichbar unter: `http://localhost:8000`
+The API is accessible at: `http://localhost:8000`
 
 ### 2. Docker Setup
 
@@ -60,10 +59,10 @@ docker-compose -f infra/docker-compose.yml up --build -d
 | Methode | Pfad                        | Beschreibung                                |
 |--------|-----------------------------|---------------------------------------------|
 | GET    | /                           | API-Status                                  |
-| POST   | /calendar/create_event/     | Neuen Termin erstellen                      |
-| GET    | /calendar/list_events/      | Kommende Termine abrufen                    |
-| GET    | /calendar/list_calendars/   | Verfügbare Google-Kalender abrufen          |
-| POST   | /generate_funny_response/   | Humorvollen Titel erzeugen via OpenAI       |
+| POST   | /calendar/create_event/     | create new calender event                    |
+| GET    | /calendar/list_events/      | Retrieve upcoming events                  |
+| GET    | /calendar/list_calendars/   | Retrieve available Google calendars          |
+| POST   | /generate_funny_response/   | Generate humorous title via OpenAI       |
 
 ### Beispiel-Request
 
