@@ -77,46 +77,46 @@ docker-compose -f infra/docker-compose.yml up --build -d
 
 ---
 
-## Qualitätssicherung mit GitHub Actions
+## Quality Assurance with GitHub Actions
 
-Dieses Projekt enthält eine GitHub Actions Pipeline, die bei jedem Push auf `main` sowie bei Pull Requests automatisch folgende Prüfungen durchführt:
+This project includes a GitHub Actions pipeline that automatically performs the following checks on every push to `main` as well as on pull requests:
 
-- **Code Style Check** – mit flake8
-- **Unittests** – mit pytest
-- **Security Scan** – mit bandit
+- **Code Style Check** – using flake8  
+- **Unit Tests** – using pytest  
+- **Security Scan** – using bandit
 
-👉 Details findest du in der Dokumentation [`ci_cd_quality_pipeline.md`](docs/ci_cd_quality_pipeline.md)
+👉 For details, see the documentation [`ci_cd_quality_pipeline.md`](docs/ci_cd_quality_pipeline.md)
 
 ---
 
-## Infrastruktur mit Terraform
+## Infrastructure with Terraform
 
-Die Bereitstellung in AWS (ECS, Fargate, ECR) erfolgt mithilfe von Terraform.
+Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
-👉 Anleitungen:
+👉 Guides:
 - [`terraform_infra_setup.md`](docs/terraform_infra_setup.md)
 - [`terraform_ecr_setup_2025-04-08.md`](docs/terraform_ecr_setup_2025-04-08.md)
 
 ---
 
-## Docker-Dokumentation
+## Docker Documentation
 
-👉 Schritt-für-Schritt-Anleitungen:
+👉 Step-by-step guides:
 - [`docker_setup.md`](docs/docker_setup.md)
 - [`docker_installation.md`](docs/docker_installation.md)
 - [`DockerAndCalender.md`](docs/DockerAndCalender.md)
 
 ---
 
-## Weitere Ressourcen
+## Additional Resources
 
-- [`ci_cd_pipeline_2025-04-08.md`](docs/ci_cd_pipeline_2025-04-08.md) – ältere CI/CD-Doku
-- [`README_smartcalendar.md`](docs/README_smartcalendar.md) – Feature-Überblick
-- `doc.pdf` – Schritt-für-Schritt AWS Cluster Einrichtung (mit Screenshots)
+- [`ci_cd_pipeline_2025-04-08.md`](docs/ci_cd_pipeline_2025-04-08.md) – older CI/CD documentation  
+- [`README_smartcalendar.md`](docs/README_smartcalendar.md) – feature overview  
+- `doc.pdf` – step-by-step AWS cluster setup (with screenshots)
 
 ---
 
-## Autor
+## Author
 
 Gabriel Simon  
 GitHub: [GS-91](https://github.com/GS-91)
