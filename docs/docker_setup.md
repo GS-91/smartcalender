@@ -1,4 +1,7 @@
-# 🚀 Docker-Setup für SmartCalendar API
+# Docker-Setup für SmartCalendar API
+
++ Diese Datei erklärt Schritt für Schritt, wie du SmartCalendar lokal oder per Docker startest.
++ Sie richtet sich auch an Einsteiger:innen und verwendet bewusst einfache Sprache.
 
 ## 📌 Voraussetzungen
 - Installiere [Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -15,8 +18,7 @@
 
 ## 🛠️ Docker Image & Container Setup
 ### 1️⃣ **Docker-Container bauen und starten**
-Führe folgende Befehle im **Projekt-Hauptverzeichnis** aus:
-```bash
++ Führe folgende Befehle im Wurzelverzeichnis des geklonten Projekts aus (z. B. `~/smartcalender`):```bash
 docker-compose -f infra/docker-compose.yml up --build -d
 ```
 Dies erledigt:
@@ -84,12 +86,9 @@ docker-compose -f infra/docker-compose.yml down
 ```bash
 docker-compose -f infra/docker-compose.yml up --build -d
 ```
-
----
-
-## 📌 Fazit
-✅ **Docker läuft jetzt mit deiner SmartCalendar API**  
-✅ **Falls Fehler auftreten, kannst du die Logs prüfen**  
-✅ **Mit `docker-compose up --build -d` kannst du Änderungen neu laden**
-
-🚀 **Viel Erfolg mit deinem DevOps-Kalender-Projekt! 🔥**
++ ##  Weitere Hinweise für Entwickler:innen
++
++ - Die `docker-compose.yml` befindet sich unter `infra/docker-compose.yml`
++ - Das zugehörige `Dockerfile` findest du im Projekt-Root: `Dockerfile`
++ - Der API-Port ist standardmäßig auf `8000` gesetzt.
++ - Die Umgebungsvariable `GOOGLE_APPLICATION_CREDENTIALS` wird im Container gesetzt und muss auf eine gültige JSON-Datei zeigen.
