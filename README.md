@@ -95,7 +95,7 @@ Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
 👉 Guides:
 - [`terraform_infra_setup.md`](docs/terraform_infra_setup.md)
-- [`terraform_ecr_setup_2025-04-08.md`](docs/terraform_ecr_setup_2025-04-08.md)
+- [`terraform_ecr_setup.md`](docs/terraform_ecr_setup.md)
 
 ---
 
@@ -110,7 +110,7 @@ Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
 ## Additional Resources
 
-- [`ci_cd_pipeline_2025-04-08.md`](docs/ci_cd_pipeline_2025-04-08.md) – older CI/CD documentation  
+- [`ci_cd_pipeline.md`](docs/ci_cd_pipeline.md) – older CI/CD documentation  
 - [`README_smartcalendar.md`](docs/README_smartcalendar.md) – feature overview  
 - `doc.pdf` – step-by-step AWS cluster setup (with screenshots)
 
