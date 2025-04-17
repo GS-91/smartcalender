@@ -85,7 +85,7 @@ This project includes a GitHub Actions pipeline that automatically performs the 
 - **Unit Tests** – using pytest  
 - **Security Scan** – using bandit
 
-👉 For details, see the documentation [`ci_cd_quality_pipeline.md`](docs/ci_cd_quality_pipeline.md)
+For details, see the documentation [`ci_cd_quality_pipeline.md`](docs/ci_cd_quality_pipeline.md)
 
 ---
 
@@ -93,7 +93,7 @@ This project includes a GitHub Actions pipeline that automatically performs the 
 
 Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
-👉 Guides:
+Guides:
 - [`terraform_infra_setup.md`](docs/terraform_infra_setup.md)
 - [`terraform_ecr_setup.md`](docs/terraform_ecr_setup.md)
 
@@ -101,7 +101,7 @@ Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
 ## Docker Documentation
 
-👉 Step-by-step guides:
+Step-by-step guides:
 - [`docker_setup.md`](docs/docker_setup.md)
 - [`docker_installation.md`](docs/docker_installation.md)
 - [`DockerAndCalender.md`](docs/DockerAndCalender.md)
@@ -116,7 +116,3 @@ Deployment to AWS (ECS, Fargate, ECR) is done using Terraform.
 
 ---
 
-## Author
-
-Gabriel Simon  
-GitHub: [GS-91](https://github.com/GS-91)

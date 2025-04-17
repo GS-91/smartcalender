@@ -3,7 +3,7 @@
 + Diese Datei erklärt Schritt für Schritt, wie du SmartCalendar lokal oder per Docker startest.
 + Sie richtet sich auch an Einsteiger:innen und verwendet bewusst einfache Sprache.
 
-## 📌 Voraussetzungen
+## Voraussetzungen
 - Installiere [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - Starte Docker:  
   ```bash
@@ -17,14 +17,14 @@
 ---
 
 ## 🛠️ Docker Image & Container Setup
-### 1️⃣ **Docker-Container bauen und starten**
+### **Docker-Container bauen und starten**
 + Führe folgende Befehle im Wurzelverzeichnis des geklonten Projekts aus (z. B. `~/smartcalender`):```bash
 docker-compose -f infra/docker-compose.yml up --build -d
 ```
 Dies erledigt:
-✅ Löscht alte Container  
-✅ Baut das Docker-Image neu  
-✅ Startet den Container im Hintergrund  
+Löscht alte Container  
+Baut das Docker-Image neu  
+Startet den Container im Hintergrund  
 
 ---
 
@@ -66,23 +66,23 @@ source ~/.zshrc
 
 ---
 
-## 🛠️ **Nützliche Befehle**
-### 🔍 **Laufende Container prüfen**
+## **Nützliche Befehle**
+### **Laufende Container prüfen**
 ```bash
 docker ps
 ```
 
-### 📄 **Logs eines Containers anzeigen**
+### **Logs eines Containers anzeigen**
 ```bash
 docker logs smartcalendar-api
 ```
 
-### ⏹ **Container stoppen**
+### **Container stoppen**
 ```bash
 docker-compose -f infra/docker-compose.yml down
 ```
 
-### 🚀 **Container neu starten**
+### **Container neu starten**
 ```bash
 docker-compose -f infra/docker-compose.yml up --build -d
 ```

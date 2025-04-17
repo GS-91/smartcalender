@@ -1,4 +1,4 @@
-# 🚀 CI/CD Quality Assurance Pipeline
+# CI/CD Quality Assurance Pipeline
 
 # CI/CD Quality Assurance Pipeline
 
@@ -7,7 +7,7 @@ Sie stellt sicher, dass der Code bei jeder Änderung auf **Style**, **Funktional
 
 ---
 
-## 🔍 Checks im Überblick
+## Checks im Überblick
 
 1. **Flake8**
    - Prüft den Python-Code auf Style-Konformität.
@@ -23,7 +23,7 @@ Sie stellt sicher, dass der Code bei jeder Änderung auf **Style**, **Funktional
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 - Alle benötigten Pakete werden über `requirements-dev.txt` installiert.
   ```bash
@@ -42,10 +42,10 @@ Sie stellt sicher, dass der Code bei jeder Änderung auf **Style**, **Funktional
 Diese Dateien enthalten ergänzende Anleitungen zur Docker-Nutzung und zur Infrastrukturbereitstellung mit Terraform.
 
 - [`DockerAndCalender.md`](DockerAndCalender.md)  
-  👉 Beschreibt, wie Docker-Container und der SmartCalendar zusammenarbeiten.
+  Beschreibt, wie Docker-Container und der SmartCalendar zusammenarbeiten.
 
 - [`terraform_infra_setup.md`](terraform_infra_setup.md)  
-  👉 Schritt-für-Schritt-Anleitung zur Einrichtung der Cloud-Infrastruktur mit Terraform (ECS, Fargate, VPC, etc.).
+  Schritt-für-Schritt-Anleitung zur Einrichtung der Cloud-Infrastruktur mit Terraform (ECS, Fargate, VPC, etc.).
 
 - [`terraform_ecr_setup_2025-04-08.md`](terraform_ecr_setup_2025-04-08.md)  
-  👉 Anleitung zum Anlegen eines ECR-Repositories und zur Integration in den CI/CD-Workflow.
+  Anleitung zum Anlegen eines ECR-Repositories und zur Integration in den CI/CD-Workflow.

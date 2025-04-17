@@ -1,10 +1,10 @@
-# 🚀 Docker: Schritt-für-Schritt Anleitung
+# Docker: Schritt-für-Schritt Anleitung
 
 Hier ist deine **komplette Anleitung**, wie du Docker für dein **DevOpsKalenderProjekt** nutzt – mit den passenden **Hauptdateien** und **Befehlen**.
 
 ---
 
-## 📁 Hauptdateien, die du nutzt  
+## Hauptdateien, die du nutzt  
 Diese Dateien sind wichtig für die Bedienung:
 
 | **Datei** | **Funktion** |
@@ -16,19 +16,19 @@ Diese Dateien sind wichtig für die Bedienung:
 
 ---
 
-## 📌 1. Docker starten und API laufen lassen  
+##  1. Docker starten und API laufen lassen  
 Diesen Befehl nutzt du, um Docker Compose zu starten:  
 ```bash
 docker-compose -f infra/docker-compose.yml up --build -d
 ```
-💡 **Erklärung:**
+ **Erklärung:**
 - `-f infra/docker-compose.yml` → Nutzt die `docker-compose.yml` im `infra`-Ordner.
 - `--build` → Baut das Docker-Image neu.
 - `-d` → Startet die Container im Hintergrund.
 
 ---
 
-## 📌 2. Container prüfen  
+##  2. Container prüfen  
 Sehe nach, ob deine Container laufen:  
 ```bash
 docker ps
@@ -40,7 +40,7 @@ docker ps -a
 
 ---
 
-## 📌 3. Container-Logs anschauen  
+## 3. Container-Logs anschauen  
 Falls deine API nicht funktioniert, prüfe die Logs:  
 ```bash
 docker logs smartcalendar-api
@@ -48,7 +48,7 @@ docker logs smartcalendar-api
 
 ---
 
-## 📌 4. Manuell in den Container gehen  
+## 4. Manuell in den Container gehen  
 Falls du Dateien oder Verzeichnisse im Container prüfen willst:  
 ```bash
 docker exec -it smartcalendar-api /bin/sh
@@ -62,7 +62,7 @@ exit   # Verlässt den Container
 
 ---
 
-## 📌 5. API testen  
+## 5. API testen  
 Nutze `curl`, um zu prüfen, ob die API läuft:
 ```bash
 curl http://localhost:8000
@@ -74,7 +74,7 @@ docker ps
 
 ---
 
-## 📌 6. Container stoppen  
+## 6. Container stoppen  
 Wenn du den laufenden Container **stoppen** willst:
 ```bash
 docker-compose -f infra/docker-compose.yml down
@@ -90,7 +90,7 @@ docker rm smartcalendar-api
 
 ---
 
-## 📌 7. Docker Desktop zurücksetzen  
+## 7. Docker Desktop zurücksetzen  
 Falls deine Docker-App hängt oder sich nicht öffnet:
 ```bash
 killall Docker
@@ -108,7 +108,7 @@ open /Applications/Docker.app
 
 ---
 
-## 🎯 Zusammenfassung der wichtigsten Befehle  
+## Zusammenfassung der wichtigsten Befehle  
 | **Aktion** | **Befehl** |
 |--------------------|----------------------|
 | Container starten | `docker-compose -f infra/docker-compose.yml up --build -d` |
@@ -123,5 +123,5 @@ open /Applications/Docker.app
 
 ---
 
-Dies ist dein offizieller **Docker-Guide** für das **DevOpsKalenderProjekt**. 🚀🔥
+Dies ist dein offizieller **Docker-Guide** für das **DevOpsKalenderProjekt**. 
 

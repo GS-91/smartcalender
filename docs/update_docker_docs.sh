@@ -119,5 +119,5 @@ git add "$DOCS_PATH"
 git commit -m "Update: Docker-Guide hinzugefügt"
 git push origin main
 
-echo "📖 Docker-Guide wurde erfolgreich in 'docs/docker-guide.md' erstellt und auf GitHub gepusht!"
+echo "Docker-Guide wurde erfolgreich in 'docs/docker-guide.md' erstellt und auf GitHub gepusht!"
 

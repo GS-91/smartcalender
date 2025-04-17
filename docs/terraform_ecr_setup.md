@@ -1,14 +1,14 @@
-# 🛠️ Terraform Infrastructure Setup für Amazon ECR
+# Terraform Infrastructure Setup für Amazon ECR
 
 Dieses Dokument beschreibt, wie wir das AWS Elastic Container Registry (ECR) mithilfe von Terraform eingerichtet und in unser DevOps-Projekt `smartcalender` integriert haben.
 
-## 🎯 Ziel
+## Ziel
 
 Einrichtung und Management eines ECR-Repositories (`smartcalender-api`) über **Infrastructure as Code** mit Terraform.
 
 ---
 
-## 📁 Projektstruktur
+## Projektstruktur
 
 ```bash
 terraform/
@@ -19,7 +19,7 @@ terraform/
 
 ---
 
-## 📦 Verwendete Ressourcen
+## Verwendete Ressourcen
 
 ### `aws_ecr_repository`
 
@@ -39,7 +39,7 @@ resource "aws_ecr_repository" "this" {
 
 ---
 
-## ✅ Schritte zur Nutzung
+## Schritte zur Nutzung
 
 ### 1. Repository importieren (falls schon vorhanden)
 
@@ -67,20 +67,20 @@ terraform apply
 
 ---
 
-## 🧪 Test & Status
+## Test & Status
 
 Die Konfiguration wurde erfolgreich ausgeführt. Das Repository ist bereits vorhanden und nun in Terraform eingebunden. Es wird jetzt vollständig von Terraform verwaltet.
 
 ---
 
-## 🔐 Sicherheit & Best Practices
+## Sicherheit & Best Practices
 
 - **Scan on Push** ist aktiviert → automatische Sicherheitsprüfung beim Push von Docker-Images.
 - Tags helfen bei Nachvollziehbarkeit (`Environment`, `ManagedBy`).
 
 ---
 
-## 🔄 Nächste Schritte
+## Nächste Schritte
 
 - Erweiterung um ECS / Fargate Setup via Terraform.
 - Automatisierung des gesamten Infrastructure-Provisioning durch CI/CD.

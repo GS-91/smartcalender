@@ -2,7 +2,7 @@
 
 Diese Datei beschreibt auf einfache und professionelle Weise die Terraform-Konfiguration zur Erstellung der AWS-Infrastruktur für die SmartCalendar-App. Sie richtet automatisch die nötige Cloud-Umgebung ein, um die Anwendung auf Fargate (AWS ECS) zu betreiben.
 
-👉 Siehe Konfigurationsdatei: [`infra/terraform/main.tf`](../infra/terraform/main.tf)
+Siehe Konfigurationsdatei: [`infra/terraform/main.tf`](../infra/terraform/main.tf)
 
 ---
 
